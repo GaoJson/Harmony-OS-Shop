@@ -4,12 +4,35 @@ import { MyPage } from '../component/tabbar/Mypage'
 import { ShopCarPage } from '../component/tabbar/ShopCarPage'
 import { TabItemList, TabItemModel } from '../component/tabbar/TabbarConfig'
 import { JSColor } from '../tool/color_tool'
+import { LiveEventBus,Lifecycle, MState } from '@ohos/liveeventbus'
+
+export  const  KEY_SHOP_CAR_CHANGE = "key_shop_car_change"
 
 @Entry
 @Component
 struct Index {
   @State selectIndex: number = 0
   controller = new TabsController()
+  private mLifecycle: Lifecycle;
+
+  @State shopCount:number = 0
+
+ aboutToAppear(){
+   this.mLifecycle = new Lifecycle(MState.STARTED)
+   var that = this
+   LiveEventBus
+     .get<number>(KEY_SHOP_CAR_CHANGE)
+     .observe(this,{
+       onChanged(count:number) {
+         that.shopCount = count
+       }
+     })
+ }
+
+  //生命周期感知对象
+  getLifecycle(): Lifecycle{
+    return this.mLifecycle
+  }
 
   build() {
     Tabs({ barPosition: BarPosition.End, controller: this.controller }) {
@@ -38,7 +61,7 @@ struct Index {
       if (item.index == 2){
         Stack(){
           Image(this.selectIndex==item.index?item.selectImg:item.img).width(24).height(24)
-          Text(" 1 ").fontColor(Color.White).fontSize(12).margin({bottom:15,left:30}).backgroundColor(Color.Red).borderRadius(15)
+          Text(this.shopCount.toString()).textAlign(TextAlign.Center).fontColor(Color.White).fontSize(12).margin({bottom:15,left:30}).constraintSize({minWidth:20}).padding({bottom:3,top:3}).backgroundColor(Color.Red).borderRadius(15)
         }
       }else {
         Image(this.selectIndex==item.index?item.selectImg:item.img).width(24).height(24)

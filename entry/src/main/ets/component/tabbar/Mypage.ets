@@ -1,5 +1,6 @@
 
 import { PullToRefresh, PullToRefreshConfigurator } from "@ohos/pulltorefresh"
+import router from '@ohos.router';
 
 import { JSColor } from '../../tool/color_tool';
 import { UIDevice } from '../../tool/device_tool';
@@ -193,11 +194,8 @@ export struct MyPage {
   moreItemView() {
     Column() {
       Row() {
-        Text("我的订单").fontSize(13).fontWeight(FontWeight.Bold)
-        Row() {
-          Text("全部订单").fontColor(Color.Gray).fontSize(12)
-          Image($r("app.media.icon_arrow_right_gray")).height(15).width(15)
-        }
+        Text("更多功能").fontSize(13).fontWeight(FontWeight.Bold)
+
       }.justifyContent(FlexAlign.SpaceBetween).width("100%").padding({ left: 8, right: 8, top: 6 })
 
       List() {
@@ -207,7 +205,7 @@ export struct MyPage {
               Image(e).width(25).height(25)
               Text("我的地址").fontColor(JSColor.text33Color).fontSize(12).margin({ top: 5 })
             }.onClick(() => {
-
+              router.pushUrl({url:"pages/AddressPage"})
 
             })
           }.width("100%").margin({ top: 12 })

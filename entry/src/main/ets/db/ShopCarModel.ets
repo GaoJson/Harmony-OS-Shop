@@ -1,5 +1,7 @@
 
+import { LiveEventBus } from '@ohos/liveeventbus'
 import { GoodsModel } from '../model/HomeModel'
+import { KEY_SHOP_CAR_CHANGE } from '../pages/Index'
 import { PreferencesUtils } from '../tool/PreferencesUtils'
 
 
@@ -37,14 +39,26 @@ export class ShopCarUtil{
     PreferencesUtils.getPrefer(this.tableName).then((value)=>{
       var v = value.length == 0 ? "[]": value
       var list:ShopCarModel[] = JSON.parse(v)
-      if (list.length == 0) {
-        model.id = 1
-      } else  {
-        model.id = list[list.length-1].id+1
+      var isExist = null
+      for (let i = 0; i < list.length; i++) {
+        if (list[i].shopId == model.shopId) {
+           list[i].count++
+          isExist = true
+          break
+        }
       }
-      list.push(model)
+      if (!isExist) {
+        if (list.length == 0) {
+          model.id = 1
+        } else  {
+          model.id = list[list.length-1].id+1
+        }
+        list.push(model)
+      }
+      LiveEventBus.get(KEY_SHOP_CAR_CHANGE).post(list.length);
       PreferencesUtils.putPrefer(this.tableName,JSON.stringify(list))
     })
+
   }
 
   static getList(callBack:(key: ShopCarModel[]) => void){
@@ -95,6 +109,7 @@ export class ShopCarUtil{
           existList.push(list[i])
         }
       }
+      LiveEventBus.get(KEY_SHOP_CAR_CHANGE).post(existList.length);
       PreferencesUtils.putPrefer(this.tableName,JSON.stringify(existList)).then(()=>{
         callBack()
       })

@@ -59,71 +59,73 @@ export struct ShopCarPage {
 
   @Builder
   contentView() {
-    Scroll() {
-      Column() {
+    Flex(){
+      Scroll() {
         if (this.goodsList.length == 0){
           NoData()
         }
-        ForEach(this.goodsList, (item: ShopCarModel) => {
-          Row() {
-            Checkbox().select(item.selectFlag).onChange((el) => {
-              item.selectFlag = el
-              this.saveShopCarModel(item)
-            })
-            Image(item.goodsImg).height(80).aspectRatio(1).margin({ left: 5 })
-            Column() {
-              Text(item.goodsName)
-                .padding({ right: 5 })
-                .fontSize(13)
-                .textOverflow({ overflow: TextOverflow.Ellipsis })
-                .maxLines(2)
-              Row() {
-                Text('¥' + item.goodsPrice)
-                  .fontSize(15)
-                  .padding({ right: 8, bottom: 8 })
-                  .fontColor(Color.Red)
+        Column(){
+          ForEach(this.goodsList, (item: ShopCarModel) => {
+            Row() {
+              Checkbox().select(item.selectFlag).onChange((el) => {
+                item.selectFlag = el
+                this.saveShopCarModel(item)
+              })
+              Image(item.goodsImg).height(80).aspectRatio(1).margin({ left: 5 })
+              Column() {
+                Text(item.goodsName)
+                  .padding({ right: 5 })
+                  .fontSize(13)
+                  .textOverflow({ overflow: TextOverflow.Ellipsis })
+                  .maxLines(2)
                 Row() {
-                  Text("-")
-                    .onClick(()=>{
-                      item.count -= 1
-                      if (item.count <= 0) {
-                        item.count = 1
-                      }
-                      this.saveShopCarModel(item)
-                    })
-                    .border({ radius: 2, color: Color.Gray, width: 1, }).width(20).textAlign(TextAlign.Center)
-                  TextInput({text:item.count.toString()})
-                    .type(InputType.Number)
-                    .fontColor(Color.Black)
-                    .fontSize(12)
-                    .textAlign(TextAlign.Center)
-                    .border({ radius: 1, color: Color.Gray })
-                    .width(30)
-                    .height(20)
-                    .padding(0)
-                    .onChange((value)=>{
+                  Text('¥' + item.goodsPrice)
+                    .fontSize(15)
+                    .padding({ right: 8, bottom: 8 })
+                    .fontColor(Color.Red)
+                  Row() {
+                    Text("-")
+                      .onClick(()=>{
+                        item.count -= 1
+                        if (item.count <= 0) {
+                          item.count = 1
+                        }
+                        this.saveShopCarModel(item)
+                      })
+                      .border({ radius: 2, color: Color.Gray, width: 1, }).width(20).textAlign(TextAlign.Center)
+                    TextInput({text:item.count.toString()})
+                      .type(InputType.Number)
+                      .fontColor(Color.Black)
+                      .fontSize(12)
+                      .textAlign(TextAlign.Center)
+                      .border({ radius: 1, color: Color.Gray })
+                      .width(30)
+                      .height(20)
+                      .padding(0)
+                      .onChange((value)=>{
 
 
-                    })
-                  Text("+")
-                    .onClick(()=>{
-                      item.count += 1
-                      this.saveShopCarModel(item)
-                    })
-                    .border({ radius: 2, color: Color.Gray, width: 1, }).width(20).textAlign(TextAlign.Center)
-                }.padding({right:8,bottom:5})
-              }.justifyContent(FlexAlign.SpaceBetween).width("100%")
-            }
-            .layoutWeight(1)
-            .height("100%")
-            .margin({ left: 5 })
-            .padding({ top: 8 })
-            .justifyContent(FlexAlign.SpaceBetween)
-            .alignItems(HorizontalAlign.Start)
-          }.backgroundColor(Color.White).height(90).width("100%").margin({ top: 3 })
+                      })
+                    Text("+")
+                      .onClick(()=>{
+                        item.count += 1
+                        this.saveShopCarModel(item)
+                      })
+                      .border({ radius: 2, color: Color.Gray, width: 1, }).width(20).textAlign(TextAlign.Center)
+                  }.padding({right:8,bottom:5})
+                }.justifyContent(FlexAlign.SpaceBetween).width("100%")
+              }
+              .layoutWeight(1)
+              .height("100%")
+              .margin({ left: 5 })
+              .padding({ top: 8 })
+              .justifyContent(FlexAlign.SpaceBetween)
+              .alignItems(HorizontalAlign.Start)
+            }.backgroundColor(Color.White).height(90).width("100%").margin({ top: 3 })
+          }
+          )
         }
-        )
-      }.height("100%")
+      }.width("100%")
     }.layoutWeight(1).padding({ bottom: 1 })
   }
 
